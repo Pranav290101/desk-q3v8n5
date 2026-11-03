@@ -1,0 +1,12 @@
+{
+  "name": "Organiser",
+  "short_name": "Organiser",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3ebdd",
+  "theme_color": "#f3ebdd",
+  "icons": [
+    { "src": "icon.png", "sizes": "any", "type": "image/png" }
+  ]
+}

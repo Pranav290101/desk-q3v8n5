@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Organiser">
+<meta name="theme-color" content="#f3ebdd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1e1510" media="(prefers-color-scheme: dark)">
+<title>Organiser notification test</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<style>
+  :root { --bg:#f3ebdd; --card:#fffaf1; --ink:#2a1f17; --muted:#7a6a5b; --line:#e0d3bf; --btn:#2a1f17; --btn-ink:#fffaf1; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#1e1510; --card:#2a1f17; --ink:#f3ebdd; --muted:#b3a290; --line:#41332a; --btn:#f3ebdd; --btn-ink:#1e1510; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:calc(env(safe-area-inset-top) + 20px) 18px calc(env(safe-area-inset-bottom) + 20px); background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system, system-ui, sans-serif; }
+  main { max-width:480px; margin:0 auto; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  p.sub { margin:0 0 18px; color:var(--muted); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:14px; }
+  .row { display:flex; justify-content:space-between; padding:4px 0; }
+  .row span:last-child { font-weight:600; }
+  label { display:block; font-weight:600; margin-bottom:6px; }
+  input { width:100%; padding:12px; font-size:16px; border-radius:10px; border:1px solid var(--line); background:var(--bg); color:var(--ink); }
+  button { width:100%; padding:14px; font-size:17px; font-weight:600; border:0; border-radius:12px; background:var(--btn); color:var(--btn-ink); margin-bottom:10px; }
+  button:active { opacity:.8; }
+  button:focus-visible, input:focus-visible { outline:3px solid #6a8caf; outline-offset:2px; }
+  #log { white-space:pre-wrap; min-height:3em; margin:0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Notification test</h1>
+  <p class="sub">Checks that your iPhone can receive a push from your own Worker.</p>
+
+  <div class="card">
+    <div class="row"><span>Opened from Home Screen</span><span id="s-app">…</span></div>
+    <div class="row"><span>Notifications</span><span id="s-perm">…</span></div>
+    <div class="row"><span>Subscribed</span><span id="s-sub">…</span></div>
+  </div>
+
+  <div class="card">
+    <label for="key">Access key</label>
+    <input id="key" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Paste once; stays on this phone">
+  </div>
+
+  <button id="enable" type="button">Enable notifications</button>
+  <button id="send" type="button">Send test</button>
+
+  <div class="card"><p id="log">Ready.</p></div>
+</main>
+
+<script>
+// Fill these two in before uploading. Neither is secret.
+const WORKER_URL = 'https://organiser-tester.pranavsanjeevirajan.workers.dev';   // e.g. https://organiser-test.yourname.workers.dev  (no slash at the end)
+const PUBLIC_KEY = 'BMta1EOgXt9hmkc4nHW2bZQjiXZSYvfeoz0GsTVTqNCmR9xnRp8SOPhzkdtKS71EGi-jHfaYPz5NMvZwOkK9B7A';   // the PUBLIC push key only. Never paste the private key here.
+
+const $ = id => document.getElementById(id);
+const say = msg => { $('log').textContent = msg; };
+const supported = 'serviceWorker' in navigator && 'PushManager' in window && typeof Notification !== 'undefined';
+const KEY_STORE = 'organiser.accessKey';
+
+function toBytes(b64u) {
+  const pad = '='.repeat((4 - b64u.length % 4) % 4);
+  const raw = atob((b64u + pad).replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from(raw, c => c.charCodeAt(0));
+}
+
+async function currentSub() {
+  if (!supported) return null;
+  const reg = await navigator.serviceWorker.getRegistration();
+  return reg ? reg.pushManager.getSubscription() : null;
+}
+
+async function refresh() {
+  const standalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+  $('s-app').textContent = standalone ? 'Yes' : 'No';
+  $('s-perm').textContent = typeof Notification === 'undefined' ? 'Not available' : Notification.permission;
+  try { $('s-sub').textContent = (await currentSub()) ? 'Yes' : 'No'; } catch (e) { $('s-sub').textContent = 'No'; }
+}
+
+$('key').value = (() => { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } })();
+$('key').addEventListener('input', () => { try { localStorage.setItem(KEY_STORE, $('key').value.trim()); } catch (e) {} });
+
+$('enable').addEventListener('click', async () => {
+  try {
+    if (!supported) { say('This page can’t receive notifications here. Open it from the Home Screen icon on iOS 16.4 or later.'); return; }
+    if (PUBLIC_KEY.startsWith('PASTE')) { say('The public key has not been added to this page yet.'); return; }
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') { say('Permission was not granted. Check Settings > Notifications for this app.'); refresh(); return; }
+    const reg = await navigator.serviceWorker.register('sw.js');
+    await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: toBytes(PUBLIC_KEY) });
+    say('Notifications are on. Now tap Send test.');
+  } catch (e) {
+    say('Could not turn notifications on: ' + e.message);
+  }
+  refresh();
+});
+
+$('send').addEventListener('click', async () => {
+  try {
+    if (WORKER_URL.startsWith('PASTE')) { say('The Worker address has not been added to this page yet.'); return; }
+    const key = $('key').value.trim();
+    if (!key) { say('Paste your access key first.'); return; }
+    const sub = await currentSub();
+    if (!sub) { say('Not subscribed yet. Tap Enable notifications first.'); return; }
+    say('Sending…');
+    const res = await fetch(WORKER_URL + '/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Access-Key': key },
+      body: JSON.stringify({ endpoint: sub.endpoint })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (data.ok) say('Sent. Lock your phone and wait a few seconds.');
+    else say('Not sent.\nWorker replied: ' + res.status + '\nPush service: ' + (data.status || 'n/a') + '\n' + (data.error || data.detail || ''));
+  } catch (e) {
+    say('Could not reach the Worker: ' + e.message);
+  }
+});
+
+refresh();
+</script>
+</body>
+</html>
