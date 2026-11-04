@@ -35,7 +35,7 @@
 <body>
 <main>
   <h1>Notification test</h1>
-  <p class="sub">Checks that your iPhone can receive a push from your own Worker.</p>
+  <p class="sub">Checks that your Worker can store your phone’s address and send reminders.</p>
 
   <div class="card">
     <div class="row"><span>Opened from Home Screen</span><span id="s-app">…</span></div>
@@ -49,7 +49,8 @@
   </div>
 
   <button id="enable" type="button">Enable notifications</button>
-  <button id="send" type="button">Send test</button>
+  <button id="send" type="button">Send test now</button>
+  <button id="sched" type="button">Schedule a test in 1 minute</button>
 
   <div class="card"><p id="log">Ready.</p></div>
 </main>
@@ -86,6 +87,21 @@ async function refresh() {
 $('key').value = (() => { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } })();
 $('key').addEventListener('input', () => { try { localStorage.setItem(KEY_STORE, $('key').value.trim()); } catch (e) {} });
 
+// Talks to your Worker. The access key is sent with every request.
+async function callWorker(path, method, payload) {
+  const key = $('key').value.trim();
+  if (!key) throw new Error('Paste your access key first.');
+  if (WORKER_URL.startsWith('PASTE')) throw new Error('The Worker address has not been added to this page yet.');
+  const res = await fetch(WORKER_URL + path, {
+    method,
+    headers: { 'Content-Type': 'application/json', 'X-Access-Key': key },
+    body: payload === undefined ? undefined : JSON.stringify(payload)
+  });
+  const data = await res.json().catch(() => ({}));
+  return { status: res.status, data };
+}
+const problem = r => 'Worker replied ' + r.status + ': ' + (r.data.error || 'unknown problem');
+
 $('enable').addEventListener('click', async () => {
   try {
     if (!supported) { say('This page can’t receive notifications here. Open it from the Home Screen icon on iOS 16.4 or later.'); return; }
@@ -96,7 +112,8 @@ $('enable').addEventListener('click', async () => {
     await navigator.serviceWorker.ready;
     let sub = await reg.pushManager.getSubscription();
     if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: toBytes(PUBLIC_KEY) });
-    say('Notifications are on. Now tap Send test.');
+    const r = await callWorker('/sync', 'POST', { subscription: sub.toJSON() });
+    say(r.data.ok ? 'Notifications are on, and your Worker has your phone’s address. Now tap Send test now.' : 'Notifications are on, but the Worker did not accept your phone. ' + problem(r));
   } catch (e) {
     say('Could not turn notifications on: ' + e.message);
   }
@@ -105,20 +122,20 @@ $('enable').addEventListener('click', async () => {
 
 $('send').addEventListener('click', async () => {
   try {
-    if (WORKER_URL.startsWith('PASTE')) { say('The Worker address has not been added to this page yet.'); return; }
-    const key = $('key').value.trim();
-    if (!key) { say('Paste your access key first.'); return; }
-    const sub = await currentSub();
-    if (!sub) { say('Not subscribed yet. Tap Enable notifications first.'); return; }
     say('Sending…');
-    const res = await fetch(WORKER_URL + '/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Access-Key': key },
-      body: JSON.stringify({ endpoint: sub.endpoint })
-    });
-    const data = await res.json().catch(() => ({}));
-    if (data.ok) say('Sent. Lock your phone and wait a few seconds.');
-    else say('Not sent.\nWorker replied: ' + res.status + '\nPush service: ' + (data.status || 'n/a') + '\n' + (data.error || data.detail || ''));
+    const r = await callWorker('/test', 'POST', {});
+    say(r.data.ok ? 'Sent. Lock your phone and wait a few seconds.' : 'Not sent.\n' + problem(r) + (r.data.status ? '\nPush service: ' + r.data.status : ''));
+  } catch (e) {
+    say('Could not reach the Worker: ' + e.message);
+  }
+});
+
+$('sched').addEventListener('click', async () => {
+  try {
+    say('Scheduling…');
+    const t = Date.now() + 60000;
+    const r = await callWorker('/sync', 'POST', { schedule: [{ t, id: 'sched-' + t, title: 'Organiser', body: 'Scheduled test: this came from your Worker’s clock.' }] });
+    say(r.data.ok ? 'Scheduled. Lock your phone. A notification should arrive within about 2 minutes.' : 'Not scheduled.\n' + problem(r));
   } catch (e) {
     say('Could not reach the Worker: ' + e.message);
   }
