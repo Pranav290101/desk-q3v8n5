@@ -19,7 +19,7 @@ nav button{flex:1;background:none;border:0;font-size:13px;color:var(--mut);paddi
 .chip{display:inline-block;border-radius:999px;padding:5px 12px;font-size:13px;margin:0 6px 6px 0;color:var(--ink);background:var(--gl);border:1px solid var(--gb);-webkit-backdrop-filter:var(--fx);backdrop-filter:var(--fx);box-shadow:var(--hi)}
 .gw{position:relative;margin:12px 8px 14px 50px;border-left:1px solid var(--ln)}.hl{position:absolute;left:0;right:0;border-top:1px solid var(--ln)}.hl span{position:absolute;left:-46px;top:-9px;font-size:11px;color:var(--mut);width:38px;text-align:right;font-variant-numeric:tabular-nums}
 .ev{position:absolute;border-radius:8px;padding:3px 7px;font-size:12px;line-height:1.15;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;background:color-mix(in srgb,var(--cc) 20%,#000);color:var(--cc);border-left:3px solid var(--cc);font-variant-numeric:tabular-nums}.ev b{font-weight:600;color:var(--ink)}
-i.ev{border-left:0;background:var(--cc)}
+i.ev{border-left:0;background:var(--cc)}.ev.sm{flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding-top:0;padding-bottom:0}.ev.sm b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ev.xs{font-size:11px;line-height:1}
 .now{position:absolute;left:-4px;right:0;border-top:2px solid var(--red)}
 .card{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:14px;margin-bottom:12px}
 input,select,textarea{width:100%;font-size:16px;padding:11px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);margin:4px 0 12px;outline:0}input:focus,select:focus,textarea:focus{border-color:var(--acc)}
@@ -49,7 +49,7 @@ const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],uid=()=>Date.now().toStri
 const DEF={ev:[],cats:[{id:'c1',name:'Meeting',col:1},{id:'c2',name:'Tuition',col:0},{id:'c3',name:'Personal',col:2}],tasks:[],home:{},homeDef:'17:30'};
 let S;try{S=JSON.parse(localStorage.getItem(SK))||DEF}catch(e){S=DEF}
 let day=ds(new Date()),page='cal',tf='today',view='day',q='';
-const HH=56;let cst=null;
+const HH=60;let cst=null;
 function save(){try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}clearTimeout(save.t);save.t=setTimeout(sync,2000)}
 function occ(e,date){if(e.ex&&e.ex.includes(date))return false;const a=dn(e.d),b=dn(date);if(b<a)return false;const r=e.rp;if(!r||r.k==='n')return a===b;if(r.end&&b>dn(r.end))return false;const wd=pd(date).getDay(),sd=pd(e.d);
  if(r.k==='d')return true;if(r.k==='w')return(r.days&&r.days.length?r.days:[sd.getDay()]).includes(wd);
@@ -66,8 +66,8 @@ function rDay(){const d=pd(day);$('ttl').textContent=DAYS[d.getDay()]+' '+d.getD
  for(let i=0;i<24;i++)h+='<div class="hl" style="top:'+i*HH+'px"><span>'+pad(i)+':00</span></div>';
  h+='<div class="hl" style="top:'+24*HH+'px"></div>';
  const L=evs(day),lane=[];L.forEach(e=>{let k=0;while(lane[k]&&lane[k]>e.s)k++;lane[k]=e.e;e.k=k});const nl=Math.max(1,...L.map(e=>e.k+1));
- L.forEach(e=>{const top=e.s/60*HH,ht=Math.max(28,(e.e-e.s)/60*HH-2);
-  h+='<div class="ev c'+col(e)+'" data-id="'+e.id+'" style="top:'+top+'px;height:'+ht+'px;left:'+(3+e.k*100/nl)+'%;width:calc('+100/nl+'% - 6px)"><span>'+tm(e.s)+'</span><b>'+esc(e.t)+'</b><span>'+tm(e.e)+'</span></div>'});
+ L.forEach(e=>{const top=e.s/60*HH,ht=Math.max(10,(e.e-e.s)/60*HH-2),sm=ht<48?' sm'+(ht<20?' xs':''):'';
+  h+='<div class="ev c'+col(e)+sm+'" data-id="'+e.id+'" style="top:'+top+'px;height:'+ht+'px;left:'+(3+e.k*100/nl)+'%;width:calc('+100/nl+'% - 6px)"><span>'+tm(e.s)+'</span><b>'+esc(e.t)+'</b><span>'+tm(e.e)+'</span></div>'});
  const n=new Date(),nm=n.getHours()*60+n.getMinutes();if(day===ds(n))h+='<div class="now" style="top:'+nm/60*HH+'px"></div>';
  $('main').innerHTML=h+'</div></div></div>';
  const cs=$('cs');if(cst==null)cst=Math.max(0,12+nm/60*HH-cs.clientHeight/3);cs.scrollTop=cst;cs.onscroll=()=>{cst=cs.scrollTop};
