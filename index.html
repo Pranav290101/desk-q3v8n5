@@ -1,147 +1,129 @@
 <!DOCTYPE html>
-<html lang="en-GB">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Organiser">
-<meta name="theme-color" content="#f3ebdd" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1e1510" media="(prefers-color-scheme: dark)">
-<title>Organiser notification test</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.png">
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Organiser">
+<meta name="theme-color" content="#000000"><meta name="color-scheme" content="dark">
+<title>Organiser</title><link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="icon.png">
 <style>
-  :root { --bg:#f3ebdd; --card:#fffaf1; --ink:#2a1f17; --muted:#7a6a5b; --line:#e0d3bf; --btn:#2a1f17; --btn-ink:#fffaf1; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#1e1510; --card:#2a1f17; --ink:#f3ebdd; --muted:#b3a290; --line:#41332a; --btn:#f3ebdd; --btn-ink:#1e1510; }
-  }
-  * { box-sizing: border-box; }
-  body { margin:0; padding:calc(env(safe-area-inset-top) + 20px) 18px calc(env(safe-area-inset-bottom) + 20px); background:var(--bg); color:var(--ink); font:16px/1.5 -apple-system, system-ui, sans-serif; }
-  main { max-width:480px; margin:0 auto; }
-  h1 { font-size:22px; margin:0 0 4px; }
-  p.sub { margin:0 0 18px; color:var(--muted); }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:14px; }
-  .row { display:flex; justify-content:space-between; padding:4px 0; }
-  .row span:last-child { font-weight:600; }
-  label { display:block; font-weight:600; margin-bottom:6px; }
-  input { width:100%; padding:12px; font-size:16px; border-radius:10px; border:1px solid var(--line); background:var(--bg); color:var(--ink); }
-  button { width:100%; padding:14px; font-size:17px; font-weight:600; border:0; border-radius:12px; background:var(--btn); color:var(--btn-ink); margin-bottom:10px; }
-  button:active { opacity:.8; }
-  button:focus-visible, input:focus-visible { outline:3px solid #6a8caf; outline-offset:2px; }
-  #log { white-space:pre-wrap; min-height:3em; margin:0; }
-</style>
-</head>
-<body>
-<main>
-  <h1>Notification test</h1>
-  <p class="sub">Checks that your Worker can store your phone’s address and send reminders.</p>
-
-  <div class="card">
-    <div class="row"><span>Opened from Home Screen</span><span id="s-app">…</span></div>
-    <div class="row"><span>Notifications</span><span id="s-perm">…</span></div>
-    <div class="row"><span>Subscribed</span><span id="s-sub">…</span></div>
-  </div>
-
-  <div class="card">
-    <label for="key">Access key</label>
-    <input id="key" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Paste once; stays on this phone">
-  </div>
-
-  <button id="enable" type="button">Enable notifications</button>
-  <button id="send" type="button">Send test now</button>
-  <button id="sched" type="button">Schedule a test in 1 minute</button>
-
-  <div class="card"><p id="log">Ready.</p></div>
-</main>
-
+:root{color-scheme:dark;--bg:#000;--card:#0f0f0f;--ink:#f2f2f2;--mut:#8d8d8d;--ln:#222;--acc:#2f9d7a;--afg:#04140e;--red:#e5736b;--gl:rgba(38,38,38,.5);--gb:rgba(255,255,255,.14);--hi:inset 0 1px 1px rgba(255,255,255,.28),inset 0 -2px 4px rgba(0,0,0,.35);--fx:blur(22px) saturate(170%)}
+.c0{--cc:#4fc3a1}.c1{--cc:#6ea8e6}.c2{--cc:#d6b45a}.c3{--cc:#d98c8c}.c4{--cc:#a99be0}.c5{--cc:#e09a6a}.c6{--cc:#67c6d6}.c7{--cc:#a8a8a8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{background:#000}body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:15px/1.4 -apple-system,"SF Pro Text",Helvetica,Arial,sans-serif}
+header{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:4px;padding:calc(env(safe-area-inset-top) + 8px) 10px 8px;background:rgba(10,10,10,.55);-webkit-backdrop-filter:var(--fx);backdrop-filter:var(--fx);border-bottom:1px solid var(--gb)}
+header h1{font-size:16px;font-weight:600;letter-spacing:.2px;margin:0;flex:1;text-align:center}
+button,input,select,textarea{font:inherit;color:inherit}
+.ib{background:none;border:0;padding:0;width:40px;height:40px;color:var(--ink);border-radius:50%}.ib svg{width:20px;height:20px;display:block;margin:auto;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.b{background:var(--acc);color:var(--afg);border:0;border-radius:12px;padding:11px 16px;font-weight:600;box-shadow:var(--hi)}.b2{background:var(--gl);color:var(--ink);border:1px solid var(--gb);-webkit-backdrop-filter:var(--fx);backdrop-filter:var(--fx)}.bd{background:none;color:var(--red);border:1px solid var(--red);box-shadow:none}
+main{padding:12px 12px 110px}
+nav{position:fixed;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom));width:min(88%,340px);margin:0 auto;z-index:15;display:flex;border:1px solid var(--gb);border-radius:34px;background:var(--gl);-webkit-backdrop-filter:var(--fx);backdrop-filter:var(--fx);box-shadow:var(--hi),0 8px 22px rgba(0,0,0,.6)}
+nav button{flex:1;background:none;border:0;font-size:13px;color:var(--mut);padding:13px 4px;border-radius:34px}nav .on{color:var(--ink);font-weight:600;background:rgba(255,255,255,.1)}
+.chip{display:inline-block;border-radius:999px;padding:5px 12px;font-size:13px;margin:0 6px 6px 0;color:var(--ink);background:var(--gl);border:1px solid var(--gb);-webkit-backdrop-filter:var(--fx);backdrop-filter:var(--fx);box-shadow:var(--hi)}
+.grid{position:relative;margin-left:40px;border-left:1px solid var(--ln)}.hl{position:absolute;left:0;right:0;border-top:1px solid var(--ln)}.hl span{position:absolute;left:-40px;top:-9px;font-size:11px;color:var(--mut);width:32px;text-align:right;font-variant-numeric:tabular-nums}
+.ev{position:absolute;border-radius:8px;padding:3px 7px;font-size:12px;line-height:1.15;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;background:color-mix(in srgb,var(--cc) 20%,#000);color:var(--cc);border-left:3px solid var(--cc);font-variant-numeric:tabular-nums}.ev b{font-weight:600;color:var(--ink)}
+i.ev{border-left:0;background:var(--cc)}
+.now{position:absolute;left:-4px;right:0;border-top:2px solid var(--red)}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:14px;margin-bottom:12px}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);margin:4px 0 12px;outline:0}input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+label{font-weight:600;font-size:12px;color:var(--mut);letter-spacing:.03em}
+.sheet{position:fixed;inset:0;z-index:20;overflow:auto;padding:calc(env(safe-area-inset-top) + 14px) 16px 60px;background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(30px) saturate(150%);backdrop-filter:blur(30px) saturate(150%)}.sheet h2{font-size:18px;font-weight:600;margin:4px 0 14px}
+.side{position:fixed;top:0;bottom:0;left:0;width:80%;max-width:320px;z-index:30;padding:calc(env(safe-area-inset-top) + 10px) 14px;background:rgba(20,20,20,.6);-webkit-backdrop-filter:var(--fx);backdrop-filter:var(--fx);border-right:1px solid var(--gb);box-shadow:var(--hi),8px 0 30px rgba(0,0,0,.6);transform:translateX(-104%);transition:transform .22s}.side.o{transform:none}
+.sw{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}.sw i{width:30px;height:30px;border-radius:50%;border:2px solid transparent;background:var(--cc)}.sw i.s{border-color:var(--ink)}
+.m{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}.m div{padding:8px 0;border-radius:10px;font-size:14px}.m .t{border:1px solid var(--acc);color:var(--acc)}
+.row{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--ln)}.ci{width:22px;height:22px;border:2px solid var(--acc);border-radius:50%;flex:none;background:none;padding:0}.ci.d{background:var(--acc)}
+.seg{display:flex;gap:4px;margin-bottom:10px}.seg button{flex:1;padding:9px 0;border-radius:999px;border:1px solid var(--gb);background:none;color:var(--mut);font-size:13px}.seg .on{background:rgba(255,255,255,.12);color:var(--ink);box-shadow:var(--hi)}
+.days label{display:inline-block;margin:0 10px 6px 0;font-weight:400;color:var(--ink);font-size:13px}.days input{width:auto;margin:0 4px 0 0}
+</style></head><body>
+<header><button class="ib" id="menu" aria-label="Menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><h1 id="ttl"></h1><button class="ib" id="srch" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button><button class="ib" id="mon" aria-label="Month view"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2.5"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></button></header>
+<main id="main"></main>
+<nav><button data-p="cal" class="on">Calendar</button><button data-p="plan">Game Plan</button><button data-p="set">Settings</button></nav>
+<div class="side" id="side"><button class="ib" id="sx" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="card" style="text-align:center;padding:26px 10px;background:var(--gl);border-color:var(--gb);box-shadow:var(--hi)">Banner</div><p style="color:var(--mut);text-align:center;font-size:13px">More sections later</p></div>
+<div class="sheet" id="sheet" hidden></div>
 <script>
-// Fill these two in before uploading. Neither is secret.
-const WORKER_URL = 'https://organiser-tester.pranavsanjeevirajan.workers.dev';   // e.g. https://organiser-test.yourname.workers.dev  (no slash at the end)
-const PUBLIC_KEY = 'BMta1EOgXt9hmkc4nHW2bZQjiXZSYvfeoz0GsTVTqNCmR9xnRp8SOPhzkdtKS71EGi-jHfaYPz5NMvZwOkK9B7A';   // the PUBLIC push key only. Never paste the private key here.
-
-const $ = id => document.getElementById(id);
-const say = msg => { $('log').textContent = msg; };
-const supported = 'serviceWorker' in navigator && 'PushManager' in window && typeof Notification !== 'undefined';
-const KEY_STORE = 'organiser.accessKey';
-
-function toBytes(b64u) {
-  const pad = '='.repeat((4 - b64u.length % 4) % 4);
-  const raw = atob((b64u + pad).replace(/-/g, '+').replace(/_/g, '/'));
-  return Uint8Array.from(raw, c => c.charCodeAt(0));
-}
-
-async function currentSub() {
-  if (!supported) return null;
-  const reg = await navigator.serviceWorker.getRegistration();
-  return reg ? reg.pushManager.getSubscription() : null;
-}
-
-async function refresh() {
-  const standalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-  $('s-app').textContent = standalone ? 'Yes' : 'No';
-  $('s-perm').textContent = typeof Notification === 'undefined' ? 'Not available' : Notification.permission;
-  try { $('s-sub').textContent = (await currentSub()) ? 'Yes' : 'No'; } catch (e) { $('s-sub').textContent = 'No'; }
-}
-
-$('key').value = (() => { try { return localStorage.getItem(KEY_STORE) || ''; } catch (e) { return ''; } })();
-$('key').addEventListener('input', () => { try { localStorage.setItem(KEY_STORE, $('key').value.trim()); } catch (e) {} });
-
-// Talks to your Worker. The access key is sent with every request.
-async function callWorker(path, method, payload) {
-  const key = $('key').value.trim();
-  if (!key) throw new Error('Paste your access key first.');
-  if (WORKER_URL.startsWith('PASTE')) throw new Error('The Worker address has not been added to this page yet.');
-  const res = await fetch(WORKER_URL + path, {
-    method,
-    headers: { 'Content-Type': 'application/json', 'X-Access-Key': key },
-    body: payload === undefined ? undefined : JSON.stringify(payload)
-  });
-  const data = await res.json().catch(() => ({}));
-  return { status: res.status, data };
-}
-const problem = r => 'Worker replied ' + r.status + ': ' + (r.data.error || 'unknown problem');
-
-$('enable').addEventListener('click', async () => {
-  try {
-    if (!supported) { say('This page can’t receive notifications here. Open it from the Home Screen icon on iOS 16.4 or later.'); return; }
-    if (PUBLIC_KEY.startsWith('PASTE')) { say('The public key has not been added to this page yet.'); return; }
-    const perm = await Notification.requestPermission();
-    if (perm !== 'granted') { say('Permission was not granted. Check Settings > Notifications for this app.'); refresh(); return; }
-    const reg = await navigator.serviceWorker.register('sw.js');
-    await navigator.serviceWorker.ready;
-    let sub = await reg.pushManager.getSubscription();
-    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: toBytes(PUBLIC_KEY) });
-    const r = await callWorker('/sync', 'POST', { subscription: sub.toJSON() });
-    say(r.data.ok ? 'Notifications are on, and your Worker has your phone’s address. Now tap Send test now.' : 'Notifications are on, but the Worker did not accept your phone. ' + problem(r));
-  } catch (e) {
-    say('Could not turn notifications on: ' + e.message);
-  }
-  refresh();
-});
-
-$('send').addEventListener('click', async () => {
-  try {
-    say('Sending…');
-    const r = await callWorker('/test', 'POST', {});
-    say(r.data.ok ? 'Sent. Lock your phone and wait a few seconds.' : 'Not sent.\n' + problem(r) + (r.data.status ? '\nPush service: ' + r.data.status : ''));
-  } catch (e) {
-    say('Could not reach the Worker: ' + e.message);
-  }
-});
-
-$('sched').addEventListener('click', async () => {
-  try {
-    say('Scheduling…');
-    const t = Date.now() + 60000;
-    const r = await callWorker('/sync', 'POST', { schedule: [{ t, id: 'sched-' + t, title: 'Organiser', body: 'Scheduled test: this came from your Worker’s clock.' }] });
-    say(r.data.ok ? 'Scheduled. Lock your phone. A notification should arrive within about 2 minutes.' : 'Not scheduled.\n' + problem(r));
-  } catch (e) {
-    say('Could not reach the Worker: ' + e.message);
-  }
-});
-
-refresh();
-</script>
-</body>
-</html>
+const WORKER_URL='https://organiser-tester.pranavsanjeevirajan.workers.dev',PUBLIC_KEY='BMta1EOgXt9hmkc4nHW2bZQjiXZSYvfeoz0GsTVTqNCmR9xnRp8SOPhzkdtKS71EGi-jHfaYPz5NMvZwOkK9B7A',SK='organiser.v1',KK='organiser.accessKey';
+const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,'0');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ds=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const pd=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const dn=s=>{const[a,b,c]=s.split('-').map(Number);return Math.round(Date.UTC(a,b-1,c)/864e5)};
+const tm=m=>pad(Math.floor(m/60))+':'+pad(m%60),pm=s=>{const[h,m]=s.split(':').map(Number);return h*60+m};
+const DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const DEF={ev:[],cats:[{id:'c1',name:'Meeting',col:1},{id:'c2',name:'Tuition',col:0},{id:'c3',name:'Personal',col:2}],tasks:[],home:{},homeDef:'17:30'};
+let S;try{S=JSON.parse(localStorage.getItem(SK))||DEF}catch(e){S=DEF}
+let day=ds(new Date()),page='cal',tf='today',view='day',q='';
+const H0=7,H1=18,HH=56;
+function save(){try{localStorage.setItem(SK,JSON.stringify(S))}catch(e){}clearTimeout(save.t);save.t=setTimeout(sync,2000)}
+function occ(e,date){if(e.ex&&e.ex.includes(date))return false;const a=dn(e.d),b=dn(date);if(b<a)return false;const r=e.rp;if(!r||r.k==='n')return a===b;if(r.end&&b>dn(r.end))return false;const wd=pd(date).getDay(),sd=pd(e.d);
+ if(r.k==='d')return true;if(r.k==='w')return(r.days&&r.days.length?r.days:[sd.getDay()]).includes(wd);
+ if(r.k==='f'){const days=r.days&&r.days.length?r.days:[sd.getDay()];return days.includes(wd)&&Math.floor((b-a+sd.getDay())/7)%2===0}
+ if(r.k==='m')return pd(date).getDate()===sd.getDate();if(r.k==='y')return pd(date).getDate()===sd.getDate()&&pd(date).getMonth()===sd.getMonth();return false}
+const evs=date=>S.ev.filter(e=>occ(e,date)).sort((a,b)=>a.s-b.s);
+const col=e=>e.col!=null?e.col:((S.cats.find(c=>c.id===e.cat)||{}).col||7);
+const hm=date=>S.home[date]||S.homeDef;
+function render(){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===page));$('mon').hidden=$('srch').hidden=page!=='cal';
+ if(page==='cal'){view==='month'?rMonth():view==='search'?rSearch():rDay()}else if(page==='plan')rPlan();else rSet()}
+function rDay(){const d=pd(day);$('ttl').textContent=DAYS[d.getDay()]+' '+d.getDate()+' '+d.toLocaleString('en-GB',{month:'short'});
+ const due=S.tasks.filter(t=>!t.done&&t.due===day).map(t=>esc(t.t)).join(', ');
+ let h='<div><span class="chip">DUE: '+(due||'nothing')+'</span><button class="chip" id="home">Home '+hm(day)+'</button><button class="chip" id="today">Today</button></div><div class="grid" style="height:'+(H1-H0)*HH+'px;margin-top:10px">';
+ for(let i=H0;i<=H1;i++)h+='<div class="hl" style="top:'+(i-H0)*HH+'px"><span>'+i+':00</span></div>';
+ const L=evs(day),lane=[];L.forEach(e=>{let k=0;while(lane[k]&&lane[k]>e.s)k++;lane[k]=e.e;e.k=k});const nl=Math.max(1,...L.map(e=>e.k+1));
+ L.forEach(e=>{const top=(Math.max(e.s,H0*60)-H0*60)/60*HH,ht=Math.max(28,(Math.min(e.e,H1*60)-Math.max(e.s,H0*60))/60*HH-2);
+  h+='<div class="ev c'+col(e)+'" data-id="'+e.id+'" style="top:'+top+'px;height:'+ht+'px;left:'+(3+e.k*100/nl)+'%;width:calc('+100/nl+'% - 6px)"><span>'+tm(e.s)+'</span><b>'+esc(e.t)+'</b><span>'+tm(e.e)+'</span></div>'});
+ if(day===ds(new Date())){const n=new Date(),m=n.getHours()*60+n.getMinutes();if(m>=H0*60&&m<=H1*60)h+='<div class="now" style="top:'+(m-H0*60)/60*HH+'px"></div>'}
+ $('main').innerHTML=h+'</div><div style="text-align:center;padding:14px"><button class="b" id="add">+ New meeting</button></div>';
+ $('home').onclick=()=>{const v=prompt('Home time for this day (HH:MM)',hm(day));if(v&&/^\d{1,2}:\d{2}$/.test(v)){S.home[day]=pad(pm(v)/60|0)+':'+pad(pm(v)%60);save();render()}};
+ $('today').onclick=()=>{day=ds(new Date());render()};$('add').onclick=()=>edit(null);
+ document.querySelectorAll('.ev').forEach(x=>x.onclick=()=>edit(S.ev.find(e=>e.id===x.dataset.id)))}
+function rMonth(){const d=pd(day),y=d.getFullYear(),m=d.getMonth();$('ttl').textContent=d.toLocaleString('en-GB',{month:'long',year:'numeric'});
+ const f=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();let h='<div class="seg"><button id="pv">Previous</button><button id="nx">Next</button><button id="bk">Day view</button></div><div class="m">'+['M','T','W','T','F','S','S'].map(x=>'<div style="color:var(--mut)">'+x+'</div>').join('')+'<div></div>'.repeat(f);
+ for(let i=1;i<=n;i++){const s=ds(new Date(y,m,i)),c=evs(s).length;h+='<div data-d="'+s+'" class="'+(s===ds(new Date())?'t':'')+'">'+i+(c?'<br><small>'+'&bull;'.repeat(Math.min(c,3))+'</small>':'')+'</div>'}
+ $('main').innerHTML=h+'</div>';$('pv').onclick=()=>{day=ds(new Date(y,m-1,1));render()};$('nx').onclick=()=>{day=ds(new Date(y,m+1,1));render()};$('bk').onclick=()=>{view='day';render()};
+ document.querySelectorAll('[data-d]').forEach(x=>x.onclick=()=>{day=x.dataset.d;view='day';render()})}
+function rSearch(){$('ttl').textContent='Search';$('main').innerHTML='<input id="q" placeholder="Search meetings" value="'+esc(q)+'"><div id="res"></div><button class="b2 b" id="bk">Back</button>';
+ const go=()=>{q=$('q').value.toLowerCase();$('res').innerHTML=q?S.ev.filter(e=>(e.t+' '+(e.loc||'')+' '+(e.n||'')).toLowerCase().includes(q)).map(e=>'<div class="row" data-id="'+e.id+'"><div style="flex:1"><b>'+esc(e.t)+'</b><br><small>'+e.d+' '+tm(e.s)+'</small></div></div>').join('')||'<p>No matches.</p>':'';
+  document.querySelectorAll('#res .row').forEach(x=>x.onclick=()=>{const e=S.ev.find(v=>v.id===x.dataset.id);day=e.d;view='day';render()})};$('q').oninput=go;go();$('bk').onclick=()=>{view='day';render()}}
+function rPlan(){$('ttl').textContent='Game Plan';const t0=ds(new Date()),w=ds(new Date(Date.now()+6048e5));
+ const F={today:t=>!t.done&&t.due&&t.due<=t0,week:t=>!t.done&&t.due&&t.due<=w,all:t=>!t.done,done:t=>t.done};
+ let h='<div class="card"><div class="seg" style="margin:0">'+['today','week','all','done'].map(k=>'<button data-f="'+k+'" class="'+(tf===k?'on':'')+'">'+{today:'Today',week:'This week',all:'All',done:'Done'}[k]+'</button>').join('')+'</div></div><div class="card" style="padding:4px 12px;min-height:60vh">';
+ S.tasks.filter(F[tf]).forEach(t=>{const c=S.cats.find(x=>x.id===t.cat);h+='<div class="row"><button class="ci '+(t.done?'d':'')+'" data-t="'+t.id+'" aria-label="Tick"></button><div style="flex:1;'+(t.done?'text-decoration:line-through;color:var(--mut)':'')+'" data-e="'+t.id+'">'+esc(t.t)+(t.due?'<br><small>Due '+t.due+'</small>':'')+'</div>'+(c?'<i class="ev c'+c.col+'" style="position:static;width:12px;height:12px;border-radius:50%;padding:0"></i>':'')+'</div>'});
+ $('main').innerHTML=h+'<div style="text-align:center;padding:12px"><button class="b" id="at">+ New task</button></div></div>';
+ document.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{tf=b.dataset.f;render()});
+ document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{const t=S.tasks.find(x=>x.id===b.dataset.t);t.done=!t.done;save();render()});
+ document.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>task(S.tasks.find(x=>x.id===b.dataset.e)));$('at').onclick=()=>task(null)}
+function catSel(v){return'<select id="cat">'+S.cats.map(c=>'<option value="'+c.id+'"'+(c.id===v?' selected':'')+'>'+esc(c.name)+'</option>').join('')+'</select>'}
+function task(t){const sh=$('sheet');sh.hidden=false;sh.innerHTML='<h2>'+(t?'Edit task':'New task')+'</h2><label>Task</label><input id="tt" value="'+esc(t?t.t:'')+'"><label>Due date (optional)</label><input id="td" type="date" value="'+(t&&t.due||'')+'"><label>Category</label>'+catSel(t&&t.cat)+'<button class="b" id="ts">Save</button> <button class="b b2" id="tc">Cancel</button>'+(t?' <button class="b bd" id="tx">Delete</button>':'');
+ $('tc').onclick=()=>sh.hidden=true;$('ts').onclick=()=>{const v=$('tt').value.trim();if(!v)return;const o=t||{id:uid(),done:false};o.t=v;o.due=$('td').value;o.cat=$('cat').value;if(!t)S.tasks.push(o);save();sh.hidden=true;render()};if(t)$('tx').onclick=()=>{S.tasks=S.tasks.filter(x=>x!==t);save();sh.hidden=true;render()}}
+function edit(e,copy){const sh=$('sheet'),n=!e||copy;e=e?JSON.parse(JSON.stringify(e)):{t:'',loc:'',n:'',d:day,s:540,e:600,cat:S.cats[0].id,col:null,rp:{k:'n',days:[],end:''},al:10,ex:[]};
+ const rp=e.rp||{k:'n',days:[],end:''},oc=day;sh.hidden=false;
+ sh.innerHTML='<h2>'+(n?(copy?'Duplicate meeting':'New meeting'):'Edit meeting')+'</h2><label>Title (no private details)</label><input id="t" value="'+esc(e.t)+'"><label>Location</label><input id="l" value="'+esc(e.loc||'')+'"><label>Notes</label><textarea id="nt" rows="2">'+esc(e.n||'')+'</textarea><label>Date</label><input id="d" type="date" value="'+e.d+'"><label>Start</label><input id="s" type="time" value="'+tm(e.s)+'"><label>End</label><input id="en" type="time" value="'+tm(e.e)+'"><label>Category</label>'+catSel(e.cat)+'<label>Own colour (optional)</label><div class="sw" id="sw"><i data-c="" class="s c7" style="background:none;border:2px dashed var(--mut)" title="Use category"></i>'+[0,1,2,3,4,5,6,7].map(i=>'<i data-c="'+i+'" class="c'+i+'"></i>').join('')+'</div><label>Repeat</label><select id="rk">'+[['n','Does not repeat'],['d','Daily'],['w','Weekly'],['f','Fortnightly'],['m','Monthly'],['y','Yearly']].map(x=>'<option value="'+x[0]+'"'+(rp.k===x[0]?' selected':'')+'>'+x[1]+'</option>').join('')+'</select><div class="days" id="dy">'+DAYS.map((x,i)=>'<label><input type="checkbox" value="'+i+'"'+((rp.days||[]).includes(i)?' checked':'')+'>'+x+'</label>').join('')+'</div><label>Repeat until (end date)</label><input id="re" type="date" value="'+(rp.end||'')+'"><label>Reminder</label><select id="al">'+[[-1,'None'],[0,'At start'],[5,'5 minutes before'],[10,'10 minutes before'],[15,'15 minutes before'],[30,'30 minutes before'],[60,'1 hour before'],[1440,'1 day before']].map(x=>'<option value="'+x[0]+'"'+(e.al===x[0]?' selected':'')+'>'+x[1]+'</option>').join('')+'</select><button class="b" id="sv">Save</button> <button class="b b2" id="cn">Cancel</button>'+(n?'':' <button class="b b2" id="dp">Duplicate</button> <button class="b bd" id="dl">Delete</button>');
+ let cc=e.col;const mark=()=>document.querySelectorAll('#sw i').forEach(i=>i.classList.toggle('s',String(cc==null?'':cc)===i.dataset.c));mark();document.querySelectorAll('#sw i').forEach(i=>i.onclick=()=>{cc=i.dataset.c===''?null:+i.dataset.c;mark()});
+ const vis=()=>$('dy').style.display=['w','f'].includes($('rk').value)?'block':'none';$('rk').onchange=vis;vis();$('cn').onclick=()=>sh.hidden=true;
+ const asks=a=>{const o=S.ev.find(x=>x.id===e.id);return o&&o.rp&&o.rp.k!=='n'?confirm('This is a repeating meeting.\n\nOK = '+a+' ALL of them\nCancel = just this one ('+oc+')'):true};
+ $('sv').onclick=()=>{const t=$('t').value.trim(),s=pm($('s').value||'09:00'),en=pm($('en').value||'10:00');if(!t||en<=s){alert('Add a title and an end time after the start.');return}
+  const o={...e,t,loc:$('l').value.trim(),n:$('nt').value.trim(),d:$('d').value||day,s,e:en,cat:$('cat').value,col:cc,al:+$('al').value,rp:{k:$('rk').value,days:[...document.querySelectorAll('#dy input:checked')].map(x=>+x.value),end:$('re').value}};
+  if(n){o.id=uid();o.ex=[];S.ev.push(o)}else if(asks('change')){Object.assign(S.ev.find(x=>x.id===e.id),o)}else{const old=S.ev.find(x=>x.id===e.id);old.ex=(old.ex||[]).concat(oc);o.id=uid();o.ex=[];o.rp={k:'n',days:[],end:''};S.ev.push(o)}
+  save();sh.hidden=true;render()};
+ if(!n){$('dp').onclick=()=>edit(e,true);$('dl').onclick=()=>{const old=S.ev.find(x=>x.id===e.id);if(asks('delete'))S.ev=S.ev.filter(x=>x!==old);else old.ex=(old.ex||[]).concat(oc);save();sh.hidden=true;render()}}}
+function rSet(){$('ttl').textContent='Settings';const k=localStorage.getItem(KK)||'';
+ $('main').innerHTML='<div class="card"><label>Access key</label><input id="ak" type="password" autocomplete="off" value="'+esc(k)+'"><label>Default home time</label><input id="hd" type="time" value="'+S.homeDef+'"><button class="b" id="en">Enable notifications</button> <button class="b b2" id="sn">Sync now</button><p id="st" style="color:var(--mut)"></p></div><div class="card"><b>Categories</b>'+S.cats.map(c=>'<div class="row"><i class="ev c'+c.col+'" style="position:static;width:22px;height:22px;border-radius:50%;padding:0" data-cc="'+c.id+'"></i><input data-cn="'+c.id+'" value="'+esc(c.name)+'" style="margin:0"></div>').join('')+'<button class="b b2" id="nc" style="margin-top:8px">+ Category</button></div><div class="card"><b>Backup</b><p style="color:var(--mut)">Copy this text somewhere safe, or paste a backup here and restore.</p><textarea id="bk" rows="4">'+esc(JSON.stringify(S))+'</textarea><button class="b b2" id="rs">Restore from text</button> <button class="bd b" id="cl">Clear all data</button></div>';
+ $('ak').oninput=()=>localStorage.setItem(KK,$('ak').value.trim());$('hd').onchange=()=>{S.homeDef=$('hd').value;save()};
+ document.querySelectorAll('[data-cn]').forEach(i=>i.onchange=()=>{S.cats.find(c=>c.id===i.dataset.cn).name=i.value;save()});
+ document.querySelectorAll('[data-cc]').forEach(i=>i.onclick=()=>{const c=S.cats.find(x=>x.id===i.dataset.cc);c.col=(c.col+1)%8;save();render()});
+ $('nc').onclick=()=>{S.cats.push({id:uid(),name:'New',col:S.cats.length%8});save();render()};
+ $('sn').onclick=async()=>{$('st').textContent=await sync(true)};$('en').onclick=async()=>{$('st').textContent=await enable()};
+ $('rs').onclick=()=>{try{const v=JSON.parse($('bk').value);if(!v.ev||!v.cats)throw 0;S=v;save();alert('Restored.');render()}catch(e){alert('That text is not a valid backup.')}};
+ $('cl').onclick=()=>{if(confirm('Delete everything on this phone?')){S=JSON.parse(JSON.stringify(DEF));save();render()}}}
+function sched(){const out=[],now=Date.now();for(let i=0;i<30;i++){const dt=new Date();dt.setDate(dt.getDate()+i);const date=ds(dt),L=evs(date);
+ L.forEach(e=>{if(e.al<0)return;const t=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate(),0,e.s-e.al).getTime();if(t>now)out.push({t,id:e.id+date,title:e.t,body:tm(e.s)+' to '+tm(e.e)+(e.loc?' at '+e.loc:'')})});
+ const t=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate(),7,55).getTime();if(L.length&&t>now)out.push({t,id:'sum'+date,title:'Today: '+L.length+' meeting'+(L.length>1?'s':''),body:L.slice(0,4).map(e=>tm(e.s)+' '+e.t).join(', ')})}
+ return out.sort((a,b)=>a.t-b.t).slice(0,580)}
+async function call(path,method,body){const key=localStorage.getItem(KK);if(!key)throw new Error('Add your access key in Settings.');const r=await fetch(WORKER_URL+path,{method,headers:{'Content-Type':'application/json','X-Access-Key':key},body:body?JSON.stringify(body):undefined});return{s:r.status,j:await r.json().catch(()=>({}))}}
+async function sync(msg){try{const r=await call('/sync','POST',{state:S,schedule:sched()});return r.j.ok?'Synced '+new Date().toLocaleTimeString('en-GB'):'Not synced: '+(r.j.error||r.s)}catch(e){return'Not synced: '+e.message}}
+function b64(s){const p='='.repeat((4-s.length%4)%4),r=atob((s+p).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from(r,c=>c.charCodeAt(0))}
+async function enable(){try{if(!('serviceWorker'in navigator&&'PushManager'in window))return'Open this from the Home Screen icon (iOS 16.4 or later).';if(await Notification.requestPermission()!=='granted')return'Permission not granted.';const reg=await navigator.serviceWorker.register('sw.js');await navigator.serviceWorker.ready;let s=await reg.pushManager.getSubscription();if(!s)s=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64(PUBLIC_KEY)});const r=await call('/sync','POST',{subscription:s.toJSON(),state:S,schedule:sched()});return r.j.ok?'Notifications on.':'Worker said: '+(r.j.error||r.s)}catch(e){return'Could not enable: '+e.message}}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{page=b.dataset.p;view='day';render()});
+$('menu').onclick=()=>$('side').classList.add('o');$('sx').onclick=()=>$('side').classList.remove('o');
+$('mon').onclick=()=>{view='month';render()};$('srch').onclick=()=>{view='search';render()};
+let x0=0,y0=0;const mn=$('main');mn.addEventListener('touchstart',e=>{x0=e.touches[0].clientX;y0=e.touches[0].clientY},{passive:true});
+mn.addEventListener('touchend',e=>{if(page!=='cal'||view!=='day')return;const dx=e.changedTouches[0].clientX-x0,dy=e.changedTouches[0].clientY-y0;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){const d=pd(day);d.setDate(d.getDate()+(dx<0?1:-1));day=ds(d);render()}});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+render();if(localStorage.getItem(KK))sync();
+</script></body></html>
